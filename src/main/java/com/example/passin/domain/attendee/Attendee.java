@@ -1,13 +1,20 @@
-package com.example.passin.domain.attendee;
+package rocketseat.com.passin.domain.attendee;
 
-import com.example.passin.domain.event.Event;
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
+import rocketseat.com.passin.domain.event.Event;
 
 @Entity
 @Table(name = "attendees")
@@ -16,12 +23,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Attendee {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String email;
 
@@ -30,7 +39,5 @@ public class Attendee {
     private Event event;
 
     @Column(name = "created_at")
-    private LocalDateTime created_at;
-
-
+    private LocalDateTime createdAt;
 }

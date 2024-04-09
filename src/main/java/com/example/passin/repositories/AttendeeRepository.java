@@ -1,8 +1,16 @@
 package com.example.passin.repositories;
 
-import com.example.passin.domain.attendee.Attendee;
-import com.example.passin.domain.event.Event;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AttendeeRepository extends JpaRepository<Attendee, String> {
+import rocketseat.com.passin.domain.attendee.Attendee;
+
+public interface AttendeeRepository extends JpaRepository<Attendee, String>{
+
+    List<Attendee> findByEventId(String eventId);
+
+    Optional<Attendee> findByEventIdAndEmail(String eventId, String email);
+
 }

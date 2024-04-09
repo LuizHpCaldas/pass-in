@@ -1,7 +1,12 @@
 package com.example.passin.repositories;
 
-import com.example.passin.domain.checkin.CheckIn;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ChekinRepository extends JpaRepository<CheckIn, Integer> {
+import rocketseat.com.passin.domain.checkin.CheckIn;
+
+public interface CheckInRepository extends JpaRepository<CheckIn, Integer>{
+    Optional<CheckIn> findByAttendeeId(String attendeeId);
+
 }

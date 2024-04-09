@@ -1,19 +1,35 @@
-package com.example.passin.services;
+package rocketseat.com.passin.controllers;
 
-import com.example.passin.domain.event.Event;
-import com.example.passin.dto.event.EventResponseDTO;
-import com.example.passin.repositories.EventRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import rocketseat.com.passin.dto.attendee.AttendeeBadgeResponseDTO;
+import rocketseat.com.passin.services.AttendeeService;
 
-@Service
+@RestController
+@RequestMapping("/attendees")
 @RequiredArgsConstructor
-public class EventService {
-    private final EventRepository eventRepository;
+public class AttendeeController {
+    private final AttendeeService attendeeService;
 
-    public EventResponseDTO getEventDetail(String eventId){
-      Event event =  this.eventRepository.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found with ID: " + eventId));
-        return new EventResponseDTO(event, 0);
+    @GetMapping("/{attendeeId}/badge")
+    public ResponseEntity<AttendeeBadgeResponseDTO> getAttendeeBadge(@PathVariable String attendeeId, UriComponentsBuilder uriComponentsBuilder){
+        AttendeeBadgeResponseDTO response = this.attendeeService.getAttendeeBadge(attendeeId, uriComponentsBuilder);
+        return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/{attendeeId}/check-in")
+    public ResponseEntity registerCheckIn(@PathVariable String attendeeId, UriComponentsBuilder uriComponentsBuilder){
+        this.attendeeService.checkInAttendee(attendeeId);
+
+        var uri = uriComponentsBuilder.path("/attendees/{attendeeId}/badge").buildAndExpand(attendeeId).toUri();
+
+        return ResponseEntity.created(uri).build();
+    }
 }
